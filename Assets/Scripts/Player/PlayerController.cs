@@ -110,7 +110,7 @@ using UnityEngine;
                 ceilingHit= Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
                 groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
                 // Hit a Ceiling
-                if (ceilingHit) _frameVelocity.y = Mathf.Max(0, _frameVelocity.y);
+                if (ceilingHit) _frameVelocity.y = Mathf.Min(0, _frameVelocity.y);
             }else{
                 // Hit a Ceiling
                 if (ceilingHit) _frameVelocity.y = Mathf.Min(0, _frameVelocity.y);
@@ -153,8 +153,11 @@ using UnityEngine;
 
         private void HandleJump()
         {
-            if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y > 0) _endedJumpEarly = true;
-
+            if(isUpsidedown){
+                if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y < 0) _endedJumpEarly = true;
+            }else{
+                if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y > 0) _endedJumpEarly = true;
+            }
             if (!_jumpToConsume && !HasBufferedJump) return;
 
             if (_grounded || CanUseCoyote||remainingJumps>0) ExecuteJump();
@@ -168,11 +171,13 @@ using UnityEngine;
             _timeJumpWasPressed = 0;
             _bufferedJumpUsable = false;
             _coyoteUsable = false;
-           // if(isUpsidedown){
-               // _frameVelocity.y = -_stats.JumpPower;
-            //}else{
+            if(isUpsidedown){
                 _frameVelocity.y = _stats.JumpPower;
-          //  }
+            }else{
+                _frameVelocity.y = _stats.JumpPower;
+            }
+            
+
             
             remainingJumps-=1;
             Jumped?.Invoke();
@@ -218,12 +223,16 @@ using UnityEngine;
         private void ApplyMovement(){ 
             if(isUpsidedown){
                _frameVelocity.y = -_frameVelocity.y;
+               //flip velocity
                Debug.Log("framevelocity.y" + _frameVelocity.y);
+
             }
             _rb.velocity = _frameVelocity;
-            
-            
+            if(isUpsidedown){
+                //unflip velocity so the rest of the function does not notice 
+                _frameVelocity.y= -_frameVelocity.y; 
             }
+        }
 
 #if UNITY_EDITOR
         private void OnValidate()
