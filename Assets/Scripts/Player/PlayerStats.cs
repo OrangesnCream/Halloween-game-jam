@@ -39,12 +39,20 @@ public class PlayerStats : MonoBehaviour
 
         }
         lives--;
+        if(isUpsidedown){
+            //just so this runs once
+            gameManager.GetComponent<GameStateManager>().removeHeartUI();
+        }
+        
         //reset position
         gameObject.GetComponent<Rigidbody2D>().position=starting;
         
     }
     public void AddLives(int newLives){
         lives+=newLives;
+        if(isUpsidedown){
+            gameManager.GetComponent<GameStateManager>().addHeartUI();
+        }
     }
     public void LevelEnd(){
         gameObject.GetComponent<PlayerController>().pauseMovement=true;

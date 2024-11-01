@@ -233,7 +233,7 @@ using UnityEngine;
             if(isUpsidedown){
                _frameVelocity.y = -_frameVelocity.y;
                //flip velocity
-               Debug.Log("framevelocity.y" + _frameVelocity.y);
+              // Debug.Log("framevelocity.y" + _frameVelocity.y);
 
             }
             _rb.velocity = _frameVelocity;

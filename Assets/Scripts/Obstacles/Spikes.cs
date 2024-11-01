@@ -8,8 +8,8 @@ public class Spikes : MonoBehaviour
     private GameObject[] players;
     void Start()
     {
-        if (players == null)
-            players = GameObject.FindGameObjectsWithTag("Player");
+
+        players = GameObject.FindGameObjectsWithTag("Player");
     }
 
     // Update is called once per frame
@@ -18,10 +18,15 @@ public class Spikes : MonoBehaviour
         
     }
     void OnTriggerEnter2D(Collider2D collider){
+       
         if(collider.gameObject.CompareTag("Player") ){
+
+            
             foreach(GameObject player in players){
+
                 player.gameObject.GetComponent<PlayerStats>().KillPlayer();
             }
+            
         }
     }
 }

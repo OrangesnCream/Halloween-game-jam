@@ -9,6 +9,8 @@ public class GameStateManager : MonoBehaviour
     private bool bottomReachedEnd=false;
     public GameObject loseScreen;
     public GameObject winScreen;
+
+    public GameObject[] hearts;
     void Start()
     {
         
@@ -36,5 +38,21 @@ public class GameStateManager : MonoBehaviour
         Time.timeScale=0f;
         winScreen.SetActive(false);
         loseScreen.SetActive(true);
+    }
+    public void removeHeartUI(){
+        for(int i=hearts.Length-1;i>=0;i--){
+            if(hearts[i].activeSelf){
+                hearts[i].SetActive(false);
+                break;
+            }
+        }
+    }
+    public void addHeartUI(){
+        for(int i=hearts.Length-1;i>=0;i--){
+            if(hearts[i].gameObject.activeSelf&&i<hearts.Length-1){
+                hearts[i+1].gameObject.SetActive(true);
+                break;
+            }
+        }
     }
 }
