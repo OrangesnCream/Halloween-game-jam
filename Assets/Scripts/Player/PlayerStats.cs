@@ -45,7 +45,9 @@ public class PlayerStats : MonoBehaviour
         }
         
         //reset position
+
         gameObject.GetComponent<Rigidbody2D>().position=starting;
+        gameObject.GetComponent<PlayerController>().pauseMovement=false;
         
     }
     public void AddLives(int newLives){

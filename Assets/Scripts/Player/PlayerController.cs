@@ -14,6 +14,7 @@ using UnityEngine;
         private bool _cachedQueryStartInColliders;
 
 
+
         private  Vector3 startingPosition;
         public static Transform playerPosition;
 
@@ -35,6 +36,9 @@ using UnityEngine;
 
         public bool pauseMovement=false;
 
+        private Animator anim;
+
+        private SpriteRenderer m_SpriteRenderer;
         public float GetSpeedBuff(){
             return speedBuff;
         }
@@ -54,6 +58,8 @@ using UnityEngine;
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
             playerPosition = transform;
             startingPosition=transform.position;
+            m_SpriteRenderer = GetComponent<SpriteRenderer>();
+            anim=GetComponent<Animator>();
 
         }
 
@@ -206,6 +212,7 @@ using UnityEngine;
             else
             {
                 _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed*speedBuff, _stats.Acceleration * Time.fixedDeltaTime);
+                
             }
         }
 
@@ -240,7 +247,23 @@ using UnityEngine;
             if(isUpsidedown){
                 //unflip velocity so the rest of the function does not notice 
                 _frameVelocity.y= -_frameVelocity.y; 
+            }else{
+                if(_frameVelocity.x!=0){
+                    anim.SetBool("isRunning",true);
+                }else{
+                    anim.SetBool("isRunning",false);
+                }
+                
+                //player anim flip
+                if(_frameVelocity.x > 0){
+                    m_SpriteRenderer.flipX=false;
+                // AnimationDirection.localScale = new Vector3(1f, 1f, 1f);
+                } else if(_frameVelocity.x<0) {
+                    m_SpriteRenderer.flipX=true;
+                //  AnimationDirection.localScale = new Vector3(-1f, 1f, 1f);
+                }
             }
+            
         }
 
 #if UNITY_EDITOR
@@ -263,5 +286,6 @@ using UnityEngine;
         public event Action<bool, float> GroundedChanged;
 
         public event Action Jumped;
+        //public event Action Run;
         public Vector2 FrameInput { get; }
     }
