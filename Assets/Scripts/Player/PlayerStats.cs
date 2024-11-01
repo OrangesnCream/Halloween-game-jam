@@ -34,7 +34,9 @@ public class PlayerStats : MonoBehaviour
 
     public void KillPlayer(){
         if(lives==0){
-            //restart the level
+            gameManager.GetComponent<GameStateManager>().GameLost();
+            //call lose in game state
+
         }
         lives--;
         //reset position

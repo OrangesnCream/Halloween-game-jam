@@ -7,6 +7,8 @@ public class GameStateManager : MonoBehaviour
     // Start is called before the first frame update
     private bool topReachedEnd=false;
     private bool bottomReachedEnd=false;
+    public GameObject loseScreen;
+    public GameObject winScreen;
     void Start()
     {
         
@@ -17,7 +19,10 @@ public class GameStateManager : MonoBehaviour
     {
         if(topReachedEnd&&bottomReachedEnd){
             //win state
-            Debug.Log("YOU WIN !!!!!!!!!");
+            //gives option for back to menu or next level
+            Time.timeScale=0f;
+            winScreen.SetActive(true);
+            loseScreen.SetActive(false);
         }
     }
     public void bottomWin(){
@@ -25,5 +30,11 @@ public class GameStateManager : MonoBehaviour
     }
     public void topWin(){
         topReachedEnd=true;
+    }
+    public void GameLost(){
+        //pause game and turn on lose screen
+        Time.timeScale=0f;
+        winScreen.SetActive(false);
+        loseScreen.SetActive(true);
     }
 }

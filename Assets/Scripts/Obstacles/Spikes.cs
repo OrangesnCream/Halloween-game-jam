@@ -5,9 +5,11 @@ using UnityEngine;
 public class Spikes : MonoBehaviour
 {
     // Start is called before the first frame update
+    private GameObject[] players;
     void Start()
     {
-        
+        if (players == null)
+            players = GameObject.FindGameObjectsWithTag("Player");
     }
 
     // Update is called once per frame
@@ -17,7 +19,9 @@ public class Spikes : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player") ){
-            collider.gameObject.GetComponent<PlayerStats>().KillPlayer();
+            foreach(GameObject player in players){
+                player.gameObject.GetComponent<PlayerStats>().KillPlayer();
+            }
         }
     }
 }
