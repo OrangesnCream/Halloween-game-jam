@@ -33,6 +33,7 @@ using UnityEngine;
 
         public bool isUpsidedown;
 
+        public bool pauseMovement=false;
 
         public float GetSpeedBuff(){
             return speedBuff;
@@ -46,6 +47,7 @@ using UnityEngine;
         }
         private void Awake()
         {
+            pauseMovement=false;
             _rb = GetComponent<Rigidbody2D>();
             _col = GetComponent<CapsuleCollider2D>();
 
@@ -91,8 +93,15 @@ using UnityEngine;
             HandleJump();
             HandleDirection();
             HandleGravity();
+            if(!pauseMovement){
+                ApplyMovement();
+            }else{
+
+                _frameVelocity.x=0;
+                _frameVelocity.y=0;
+                _rb.velocity = _frameVelocity;
+            }
             
-            ApplyMovement();
         }
 
         #region Collisions
